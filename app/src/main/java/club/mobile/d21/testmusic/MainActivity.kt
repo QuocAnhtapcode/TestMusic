@@ -5,7 +5,6 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import club.mobile.d21.testmusic.data.Data
 import club.mobile.d21.testmusic.databinding.ActivityMainBinding
@@ -30,10 +29,13 @@ class MainActivity:AppCompatActivity() {
                 mediaPlayer?.stop() // Dừng MediaPlayer hiện tại (nếu có)
             }
         )
+        binding.searchIcon.setOnClickListener {
+            mainViewModel.search(binding.searchBar.text.toString())
+        }
         binding.listMusic.adapter = musicAdapter
         binding.listMusic.layoutManager = LinearLayoutManager(this)
-        mainViewModel.data.observe(this, Observer { myData->
+        mainViewModel.data.observe(this) { myData ->
             musicAdapter.submitList(myData.data)
-        })
+        }
     }
 }
