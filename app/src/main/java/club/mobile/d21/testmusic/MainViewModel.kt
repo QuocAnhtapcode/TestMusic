@@ -13,6 +13,12 @@ import kotlinx.coroutines.launch
 class MainViewModel(application: Application):AndroidViewModel(application) {
     private val retrofitBuilder = RetrofitHelper.getInstance().create(ApiService::class.java)
     private val _data = MutableLiveData<MyData>()
+    init {
+        viewModelScope.launch {
+            val retrofitData = retrofitBuilder.getData("hello")
+            _data.value = retrofitData
+        }
+    }
     internal fun search(keyword: String){
         viewModelScope.launch {
             val retrofitData = retrofitBuilder.getData(keyword)
